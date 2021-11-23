@@ -306,6 +306,13 @@ pub fn std_cargo(builder: &Builder<'_>, target: TargetSelection, stage: u32, car
         let mut features = builder.std_features(target);
         features.push_str(compiler_builtins_c_feature);
 
+        // Add memcpy/memmove/memset support for UEF target
+        // I'm not sure if it's good way.
+        // TBD: Need to investigate.
+        if target.contains("uefi") {
+            features.push_str(" compiler-builtins-mem");
+        }
+
         cargo
             .arg("--features")
             .arg(features)
