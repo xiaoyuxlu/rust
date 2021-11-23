@@ -54,11 +54,14 @@ cfg_if::cfg_if! {
         pub use real_imp::eh_frame_registry::*;
         #[path = "gcc.rs"]
         mod real_imp;
+    } else if  #[cfg(target_os = "uefi")] {
+        // UEFI unwinding impl
+        #[path = "uefi.rs"]
+        mod real_imp;
     } else {
         // Targets that don't support unwinding.
         // - arch=wasm32
         // - os=none ("bare metal" targets)
-        // - os=uefi
         // - os=espidf
         // - nvptx64-nvidia-cuda
         // - arch=avr
